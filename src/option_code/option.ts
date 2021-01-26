@@ -88,3 +88,19 @@ const D = foldF(f, (a) => `a some containing ${a}`);
 
 console.log(D(isEven(2)));
 console.log(D(isEven(1)));
+
+/* Filter function */
+
+/* export const filterMap: <A, B>(
+  f: (a: A) => Option<B>,
+  fa: (p: Option<A>) => Option<B>
+) => Option<B> = (f, fa) => (isNone(fa) ? none() : f(fa)); */
+
+export const filterMapM: <A, B>(
+  f: (a: A) => Option<B>,
+  fa: Option<A>
+) => Option<B> = (f, fa) => (isNone(fa) ? none() : f(fa.value));
+
+const E = filterMapM(() => isEven(1), some(2));
+
+console.log(E);
