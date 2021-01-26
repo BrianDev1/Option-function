@@ -2,8 +2,8 @@
 import React from "react";
 
 export enum Options {
-  none,
-  some,
+  none = "none",
+  some = "some",
 }
 
 export interface None {
@@ -42,7 +42,7 @@ const isEven = (p: number): Option<number> => {
 };
 
 export const TestFunc = () => {
-  const Vv: Option<number> = isEven(1);
+  const Vv: Option<number> = isEven(2);
 
   if (isSome(Vv)) {
     console.log("Hey Hey Hey... Bingo!", Vv);
@@ -50,3 +50,41 @@ export const TestFunc = () => {
     console.log("Ooooops!!");
   }
 };
+
+/* Map function */
+
+// export declare const map: <A, B>(
+//   f: (a: A) => B
+// ) => (fa: Option<A>) => Option<B>;
+
+export const mapT: <A, B>(f: (a: A) => B, fa: Option<A>) => Option<B> = (
+  f,
+  fa
+) => (isNone(fa) ? none() : some(f(fa.value)));
+
+const calc = (n: number): number => {
+  return n * 2;
+};
+
+const Tt: Option<number> = isEven(2);
+
+const P = mapT(calc, isEven(2));
+
+console.log(P);
+
+/* Fold function */
+
+export function foldF<A, B>(
+  onNone: () => B,
+  onSome: (a: A) => B
+): (ma: Option<A>) => B {
+  return (ma) => (isNone(ma) ? onNone() : onSome(ma.value));
+}
+
+const f: () => string = () => "a none";
+
+const D = foldF(f, (a) => `a some containing ${a}`);
+// const G = foldF(f, (a) => `a some containing ${a}`);
+
+console.log(D(isEven(2)));
+console.log(D(isEven(1)));

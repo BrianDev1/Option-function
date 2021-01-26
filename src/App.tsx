@@ -1,4 +1,3 @@
-import "./App.css";
 import { TestFunc } from "./option_code/option";
 
 function App() {
